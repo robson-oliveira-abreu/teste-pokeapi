@@ -24,9 +24,7 @@ async function callPokeData(id) {
     await fetch(pokeUrl)
         .then(res => res.json())
         .then(res => {
-            console.log(res)
             setImage(res.sprites.front_default, id)
-            console.log(res.sprites.front_default)
         })
 
 }
@@ -36,8 +34,6 @@ async function searchPoke(id) {
     await fetch(pokeUrl)
         .then(res => res.json())
         .then(res => {
-            console.log(res.name)
-            console.log(res.sprites.front_default)
             setSearchRes(res.name, res.sprites.front_default)
         })
 }
@@ -61,8 +57,11 @@ function setElements({ results }) {
 
         cards[i].addEventListener('click', (el) => {
             let id = el.target.innerText
-            console.log(id)
-            callPokeData(id)
+            const cardChildren = document.getElementById(id).children
+            
+            if(cardChildren.length == 1){
+                callPokeData(id)
+            }
         })
     }
 }
@@ -80,12 +79,11 @@ function setSearchRes(name, img) {
     text = document.createTextNode(name);
     div.setAttribute('id', 'searchRes')
     image.setAttribute('src', `${img}`)
-    
+
     pName.appendChild(text);
     div.appendChild(pName);
     div.appendChild(image);
-        
-    console.log(image)
+
     search.appendChild(div)
 }
 
@@ -93,7 +91,7 @@ callData(baseUrl)
 
 searchBtn.addEventListener('click', () => {
     searchRes = document.getElementById('searchRes')
-    if(searchRes) {
+    if (searchRes) {
         document.getElementById('search').removeChild(searchRes)
     }
 
